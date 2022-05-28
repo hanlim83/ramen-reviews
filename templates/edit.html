@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% set page = "edit" %}
+{% block content %}
+<h1>{% block title %} Edit Review {% endblock %}</h1>
+<div class="card">
+  <div class="card-header">
+    Edit Review
+  </div>
+  <div class="card-body">
+    <form action="/edit" id="searchForm" method="post" class="needs-validation">
+      <div class="mb-3">
+        <input type="hidden" id="idhiddeninput" name="ID" value="{{ review['ID']}}">
+      </div>
+      <div class="mb-3">
+        <label for="countryselector" class="form-label">Country</label>
+        <select class="form-select" aria-label="Country Selector" name="Country" id="countryselector" required>
+          {% for country in countries %}
+          {% if review['Country'] == country['Country'] %}
+          <option value="{{ country['Country']}}" selected>{{ country['Country']}}</option>
+          {% endif %}
+          {% if review['Country'] !=  country['Country'] %}
+          <option value="{{ country['Country']}}">{{ country['Country']}}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="brandinput" class="form-label">Brand</label>
+        <input type="text" class="form-control" id="brandinput" name="Brand" value="{{ review['Brand']}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="typeinput" class="form-label">Type</label>
+        <input type="text" class="form-control" id="typeinput" name="Type" value="{{ review['Type']}}" required>
+      </div>
+      <div class="mb-3">
+        <label for="packageselector" class="form-label">Package</label>
+        <select class="form-select" aria-label="Package Selector" name="Package" id="packageselector" required>
+          {% for package in packages %}
+          {% if review['Package'] == package['Package'] %}
+          <option value="{{ package['Package']}}" selected>{{ package['Package']}}</option>
+          {% endif %}
+          {% if review['Package'] != package['Package'] %}
+          <option value="{{ package['Package']}}">{{ package['Package']}}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="typeinput" class="form-label">Rating</label>
+        <input type="number" min="0" max="5" class="form-control" id="ratinginput" name="Rating"
+          aria-describedby="ratinginputhelp" required value="{{ review['Rating']}}" step=".01">
+        <div id="ratinginputHelp" class="form-text">Rating should between 0 and 5</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Edit Review</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,16 +1,68 @@
 {% extends 'base.html' %}
 {% set page = "home" %}
 {% block content %}
-<h1>{% block title %} Ramen Reviews {% endblock %}</h1>
+<h1>{% block title %} Reviews {% endblock %}</h1>
+<div class="card">
+  <div class="card-header">
+    Search Reviews
+  </div>
+  <div class="card-body">
+    <form action="/" id="searchForm" method="post">
+      <div class="mb-3">
+        <label for="countryselector" class="form-label">Country</label>
+        <select class="form-select" aria-label="Country Selector" name="Country" id="countryselector">
+          {% for country in countries %}
+          <option value="{{ country['Country']}}">{{ country['Country']}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="brandselector" class="form-label">Brand</label>
+        <select class="form-select" aria-label="Brand Selector" name="Brand" id="brandselector">
+          {% for brand in brands %}
+          <option value="{{ brand['Brand']}}">{{ brand['Brand']}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="typeinput" class="form-label">Type</label>
+        <input type="text" class="form-control" id="typeinput" name="Type" aria-describedby="typeHelp">
+        <div id="typeHelp" class="form-text">You do not need to type the full Type</div>
+      </div>
+      <div class="mb-3">
+        <label for="packageselector" class="form-label">Package</label>
+        <select class="form-select" aria-label="Package Selector" name="Package" id="packageselector">
+          {% for package in packages %}
+          <option value="{{ package['Package']}}">{{ package['Package']}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="typeinput" class="form-label">Minimum Rating</label>
+        <input type="number" min="0" max="5" class="form-control" id="minimumratinginput" name="Minimum Rating"
+          aria-describedby="minimumratinginputhelp">
+        <div id="minimumratinginputHelp" class="form-text">Rating should be equal or above 0</div>
+      </div>
+      <div class="mb-3">
+        <label for="typeinput" class="form-label">Maximum Rating</label>
+        <input type="number" min="0" max="5" class="form-control" id="maxmiumratinginput" name="Maxmium Rating"
+          aria-describedby="maxmiumratinginputhelp" step=".01">
+        <div id="maxmiumratinginputHelp" class="form-text">Rating should be equal or below 5</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+</div>
 <table id="reviews" class="table table-hover table-striped"">
   <thead>
     <tr>
-      <th>S/N</th>
+      <th>ID</th>
       <th>Country</th>
       <th>Brand</th>
       <th>Type</th>
       <th>Packaging</th>
       <th>Rating</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -22,18 +74,25 @@
       <td>{{ review['Type'] }}</td>
       <td>{{ review['Package'] }}</td>
       <td>{{ review['Rating'] }}</td>
-    </tr>
-  {% endfor %}
-</tbody>
-<tfoot>
-  <tr>
-    <th>S/N</th>
-    <th>Country</th>
-    <th>Brand</th>
-    <th>Type</th>
-    <th>Packaging</th>
-    <th>Rating</th>
+      <td>
+        <div class=" btn-group" role="group" aria-label="Action">
+  <a href="/edit?ID={{ review['ID'] }}" type="button" class="btn btn-primary">Edit</a>
+  <a href="/delete?ID={{ review['ID'] }}" type="button" class="btn btn-danger">Delete</a>
+  </div>
+  </td>
   </tr>
-</tfoot>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>ID</th>
+      <th>Country</th>
+      <th>Brand</th>
+      <th>Type</th>
+      <th>Packaging</th>
+      <th>Rating</th>
+      <th>Actions</th>
+    </tr>
+  </tfoot>
 </table>
 {% endblock %}
