@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% set page = "home" %}
+{% block content %}
+<h1>{% block title %} Ramen Reviews {% endblock %}</h1>
+<table id="reviews" class="table table-hover table-striped"">
+  <thead>
+    <tr>
+      <th>S/N</th>
+      <th>Country</th>
+      <th>Brand</th>
+      <th>Type</th>
+      <th>Packaging</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in reviews %}
+    <tr>
+      <td>{{ review['ID'] }}</td>
+      <td>{{ review['Country'] }}</td>
+      <td>{{ review['Brand'] }}</td>
+      <td>{{ review['Type'] }}</td>
+      <td>{{ review['Packaging'] }}</td>
+      <td>{{ review['Rating'] }}</td>
+    </tr>
+  {% endfor %}
+</tbody>
+<tfoot>
+  <tr>
+    <th>S/N</th>
+    <th>Country</th>
+    <th>Brand</th>
+    <th>Type</th>
+    <th>Packaging</th>
+    <th>Rating</th>
+  </tr>
+</tfoot>
+</table>
+{% endblock %}

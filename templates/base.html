@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {% endblock %} - Ramen Reviews</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/datatables.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <nav class="navbar bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Ramen Reviews</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a {% if page=='home' %}class="nav-link active" aria-current="page" {% endif %} {% if page !='home'
+                        %}class="nav-link" {% endif %} href="/">Home</a>
+                    <a {% if page=='create' %}class="nav-link active" aria-current="page" {% endif %} {% if page
+                        !='create' %}class="nav-link" {% endif %} href="/create">Create</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <hr>
+    <div class="container-fluid">
+        {% block content %} {% endblock %}
+    </div>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/datatables.min.js"></script>
+    {% if page=='home' %}
+    <script>
+        $(document).ready(function () {
+            $('#reviews').DataTable({
+                ordering: false,
+                info: false,
+                search: false,
+            });
+        });
+    </script>
+    {% endif %}
+</body>
+
+</html>
