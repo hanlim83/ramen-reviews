@@ -54,7 +54,7 @@ The following contraints were applied to the database table:
     - The values will be vaildated to ensure data integrity. The API will provide the error message if the data is of the incorrect type
 ### /api/update
   - HTTP Method: POST
-  - Input Data: A JSON object containing the review object to be modified
+  - Input Data: A JSON object containing the review object with the specific attributes to be update
   - Output data: A message indicating that the review object has been updated successfully
   - Notes:
     - Only these JSON Key Values will be read: ID, Country, Brand, Type, Package, Minimum Rating

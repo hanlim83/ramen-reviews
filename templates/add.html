@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% set page = "create" %}
+{% set page = "add" %}
 {% block content %}
 <h1>{% block title %} New Review {% endblock %}</h1>
 <div class="card">
@@ -7,7 +7,7 @@
     Create Review
   </div>
   <div class="card-body">
-    <form action="/create" id="searchForm" method="post" class="needs-validation">
+    <form action="/add" id="searchForm" method="post" class="needs-validation">
       <div class="mb-3">
         <label for="countryselector" class="form-label">Country</label>
         <select class="form-select" aria-label="Country Selector" name="Country" id="countryselector" required>

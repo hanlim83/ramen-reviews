@@ -18,7 +18,7 @@
           {% if review['Country'] == country['Country'] %}
           <option value="{{ country['Country']}}" selected>{{ country['Country']}}</option>
           {% endif %}
-          {% if review['Country'] !=  country['Country'] %}
+          {% if review['Country'] != country['Country'] %}
           <option value="{{ country['Country']}}">{{ country['Country']}}</option>
           {% endif %}
           {% endfor %}
