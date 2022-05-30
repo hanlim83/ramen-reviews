@@ -14,7 +14,7 @@ From the folder where the codes reside,
   - **For Windows:**
     - `SET FLASK_APP=app`
     - `SET FLASK_ENV=development`
-4. Finally, start the API / Web App by running `flask run`
+4. Finally, start the API / Web App by running `flask run` or `python -m flask run `
 ## Database Preparation Steps in initialise_database.py
 The database was first created using the SQL schema file under `schema.sql`
 
