@@ -4,7 +4,7 @@ import sys
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 app.config['SECRET_KEY'] = 'Wheatley'
-
+app.config['JSON_SORT_KEYS'] = False
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -242,7 +242,7 @@ def get_specific():
         except ValueError:
             return "Maxmium Rating parameter must be an Float", 400
     if not 'ID' in request.args and 'Country' not in request.args and 'Brand' not in request.args and 'Type' not in request.args and 'Package' not in request.args and 'Minimum Rating' not in request.args and 'Maximum Rating' not in request.args:
-        return "Error: No Parameters specified. Any paramters listed must be specified: ID, Country, Brand, Type, Packaging, Minimum Rating, Maximum Rating", 400
+        return "Error: No Parameters specified. Any one of paramters listed must be specified: ID, Country, Brand, Type, Packaging, Minimum Rating, Maximum Rating", 400
     query = query[:-4] + ';'
     reviews = conn.execute(query, to_filter).fetchall()
     return jsonify(reviews), 200
@@ -250,11 +250,52 @@ def get_specific():
 
 @app.route('/api/get/all', methods=['GET'])
 def get_all():
+    acceptable_sort_by_values = ['Country', 'Brand', 'Type', 'Package', 'Rating']
+    acceptable_sort_type_values = ['Ascending', 'Decending']
     conn = get_db_connection()
     conn.row_factory = dict_factory
-    reviews = conn.execute('SELECT * FROM reviews;').fetchall()
+    query = "SELECT * FROM reviews"
+    sort_filter = []
+    if 'SortBy' in request.args and request.args.get("SortBy") in acceptable_sort_by_values:
+        query += ' ORDER BY ?'
+        sort_filter.append(request.args.get('SortBy'))
+    if 'SortType' in request.args and request.args.get("SortType") in acceptable_sort_type_values:
+        if request.args.get("SortType")  == 'Ascending':
+            query += ' ASC'
+        elif request.args.get("SortType")  == 'Decending':
+            query += ' DESC'
+    if 'SortBy' in request.args and not request.args.get("SortBy") in acceptable_sort_by_values:
+        return "Invaild SortBy Parameter. SortBy Parameter must be one of the following: Country, Brand, Type, Package, Rating"
+    if 'SortType' in request.args and not request.args.get("SortType") in acceptable_sort_type_values:
+        return "Invaild SortType Paramter. Sorting Paramter must be one of the following: Ascending, Decending"
+    query = query + ';'
+    print(sort_filter)
+    reviews = conn.execute(query, sort_filter).fetchall()
     return jsonify(reviews), 200
 
+@app.route('/api/get/average_rating', methods=['GET'])
+def get_average_rating():
+    conn = get_db_connection()
+    conn.row_factory = dict_factory
+    query = "SELECT Country, Brand, Type, Package, AVG(Rating) as Average_Rating FROM reviews WHERE"
+    to_filter = []
+    if 'Country' in request.args:
+        query += ' Country = ? AND'
+        to_filter.append(request.args.get('Country'))
+    if 'Brand' in request.args:
+        query += ' Brand = ? AND'
+        to_filter.append(request.args.get('Brand'))
+    if 'Type' in request.args:
+        query += ' Type = ? AND'
+        to_filter.append(request.args.get('Type'))
+    if 'Package' in request.args:
+        query += ' Package = ? AND'
+        to_filter.append(request.args.get('Package'))
+    if 'Country' not in request.args or 'Brand' not in request.args or 'Type' not in request.args or 'Package' not in request.args:
+        return "Error: One or more Parameters are not specified. All paramters listed must be specified: Country, Brand, Type, Packaging", 400
+    query = query[:-4] + ';'
+    reviews = conn.execute(query, to_filter).fetchall()
+    return jsonify(reviews), 200
 
 @app.route('/api/add', methods=['POST'])
 def add():
@@ -341,11 +382,7 @@ def update():
             conn.execute(query, to_filter)
             conn.commit()
             conn.close()
-            conn = get_db_connection()
-            conn.row_factory = dict_factory
-            review = conn.execute('SELECT * FROM reviews WHERE ID = ?',(ID,)).fetchone()
-            conn.close()
-            return jsonify(review), 200
+            return "Review Updated Successfully!", 200
     except ValueError:
         return "ID parameter must be an Integer", 400
 
