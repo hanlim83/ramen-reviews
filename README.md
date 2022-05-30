@@ -63,7 +63,7 @@ The following contraints were applied to the database table:
 ### /api/delete
   - HTTP Method: POST
   - Input Data: A JSON object containing the ID of the review object to be deleted
-  - Output data: TA message indicating that the review object has been deleted successfully
+  - Output data: A message indicating that the review object has been deleted successfully
   - Notes:
     - Only the **ID** JSON Key Values will be read
     - Any extra values like **ExID** will be ignored. If the database does not contain the corresponding review obejct with the provided **ID**, an error message would be returned
@@ -73,4 +73,4 @@ Displays all reviews stored in the database or the filtered reviews based on the
 ### /create
 Page for creating a new review
 ### /edit
-Page for editing a review (An ID parameter must bee passed in the URL e.g. `/Edit?ID=1`)
+Page for editing a review (An ID parameter must been passed in the URL e.g. `/Edit?ID=1`)
